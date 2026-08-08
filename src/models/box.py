@@ -18,4 +18,14 @@ class Box:
 
     def volume(self) -> float:
         return self.length * self.width * self.height
+
+    def orientations(self):
+        return [
+            (self.length, self.width, self.height),
+            (self.length, self.height, self.width),
+            (self.width, self.length, self.height),
+            (self.width, self.height, self.length),
+            (self.height, self.length, self.width),
+            (self.height, self.width, self.length)
+        ]
     
