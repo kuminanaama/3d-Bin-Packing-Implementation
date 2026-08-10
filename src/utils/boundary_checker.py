@@ -1,4 +1,3 @@
-from src.models.container import Container
 from src.models.placement import Placement
 
 def fits_inside(container,placement):
