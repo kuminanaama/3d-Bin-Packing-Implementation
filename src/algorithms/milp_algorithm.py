@@ -1,4 +1,5 @@
 import pulp
+
 from src.models.box import Box
 from src.models.container import Container
 from src.models.placement import Placement
@@ -34,7 +35,6 @@ class MILPAlgorithm:
         chosen_width = {}
         chosen_height = {}
 
-
         for i, box in enumerate(self.boxes):
             orientations = box.orientations()
 
@@ -45,8 +45,7 @@ class MILPAlgorithm:
                     cat="Binary"
                 )
 
-            # Exactly one orientation must be chosen
-            # if the box is selected
+            # Exactly one orientation if the box is selected
             prob += (
                 pulp.lpSum(
                     orientation_vars[i, o]
@@ -55,7 +54,7 @@ class MILPAlgorithm:
                 == box_vars[i]
             ), f"OneOrientation_{i}"
 
-            # Dimensions resulting from the selected orientation
+            # Dimensions resulting from selected orientation
             chosen_length[i] = pulp.lpSum(
                 orientations[o][0] * orientation_vars[i, o]
                 for o in range(len(orientations))
@@ -209,20 +208,26 @@ class MILPAlgorithm:
                 )
 
         # Solve the MILP problem
-        prob.solve(pulp.PULP_CBC_CMD(msg=False))
+        prob.solve(
+            pulp.PULP_CBC_CMD(
+                msg=False,
+                timeLimit=60
+            )
+        )
 
-        # Get solver status
+        # Keep solver status information available
         status = pulp.LpStatus[prob.status]
 
-        print(f"Solver status: {status}")
-        print(f"Objective value: {pulp.value(prob.objective)}")
+        solution_status = pulp.LpSolution.get(
+            prob.sol_status,
+            "Unknown"
+        )
 
         # Create lists for packed and unpacked boxes
         packed_boxes = []
         unpacked_boxes = []
         placements = []
 
-        # Display selected boxes and their placements
         for i, box in enumerate(self.boxes):
             if pulp.value(box_vars[i]) == 1:
                 packed_boxes.append(box)
@@ -235,7 +240,9 @@ class MILPAlgorithm:
                         selected_orientation = orientations[o]
                         break
 
-                placed_length, placed_width, placed_height = selected_orientation
+                placed_length, placed_width, placed_height = (
+                    selected_orientation
+                )
 
                 placement = Placement(
                     box=box,
@@ -249,17 +256,7 @@ class MILPAlgorithm:
 
                 placements.append(placement)
 
-                   
-
-                print(
-                    f"Box {box.box_id} selected at "
-                    f"({pulp.value(x_vars[i])}, "
-                    f"{pulp.value(y_vars[i])}, "
-                    f"{pulp.value(z_vars[i])}) "
-                    f"with orientation {selected_orientation}"
-                )
-
             else:
                 unpacked_boxes.append(box)
 
-        return packed_boxes, unpacked_boxes,placements
+        return packed_boxes, unpacked_boxes, placements
