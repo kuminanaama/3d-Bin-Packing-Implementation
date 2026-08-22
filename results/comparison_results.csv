@@ -1,0 +1,5 @@
+Boxes,EP_Utilisation,MILP_Utilisation,GA_Avg_Utilisation,GA_Best_Utilisation,GA_Worst_Utilisation,EP_Runtime,MILP_Runtime,GA_Avg_Runtime,MILP_Status
+5,49.10,49.10,49.10,49.10,49.10,0.000068,0.084121,0.333765,Optimal
+10,77.90,77.90,77.90,77.90,77.90,0.000197,1.583107,1.127779,Optimal
+15,84.70,79.50,93.39,96.40,90.90,0.000822,60.093101,3.752418,Time-limited feasible
+20,85.50,59.40,94.57,97.00,91.40,0.001442,60.126657,8.328351,Time-limited feasible

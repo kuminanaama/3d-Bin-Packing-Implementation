@@ -6,4 +6,4 @@ print(f"Dimensions: {container.length} x {container.width} x {container.height}"
 
 print(f"Volume: {container.volume()}")
 
-print(f"Placed Boxes: {container.placed_boxes}")
+print(f"Placements: {container.placements}")

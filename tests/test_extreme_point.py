@@ -1,10 +1,16 @@
+import pytest
+
 from src.models.extreme_point import ExtremePoint
 
-extreme_point = ExtremePoint(1, 2, 3)
 
-print(f"Extreme Point Coordinates: x={extreme_point.x}, y={extreme_point.y}, z={extreme_point.z}")
+def test_extreme_point_valid():
+    point = ExtremePoint(1, 2, 3)
 
-#This will raise a ValueError because the x coordinate is negative
-extreme_point_negative = ExtremePoint(-1, 2, 3)  # This will raise a ValueError
+    assert point.x == 1
+    assert point.y == 2
+    assert point.z == 3
 
 
+def test_extreme_point_negative_coordinates():
+    with pytest.raises(ValueError):
+        ExtremePoint(-1, 2, 3)

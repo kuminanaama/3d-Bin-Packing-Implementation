@@ -1,4 +1,4 @@
-from src .models.box import Box
+from src.models.box import Box
 from src.models.placement import Placement
 
 box = Box(box_id="box1", length=2.0, width=3.0, height=4.0)
